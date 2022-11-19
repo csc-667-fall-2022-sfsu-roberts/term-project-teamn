@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<%- include('../partials/head',{username: username}); -%>
+
+
+<body>
+  <div class="wrapper">
+    <%- include('../partials/navbar'); -%>
+
+    <div class="main">
+      <%- include('./table'); -%>
+      <%- include('./chat'); -%>
+    </div>
+
+
+    <%- include('../partials/footer'); -%>
+</body>
+
+</html>

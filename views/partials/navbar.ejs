@@ -1,0 +1,8 @@
+<header>
+  <nav class="navbar navbar-light bg-light mx-3 justify-content-between">
+    <h1>player: <%= username ? username : 'not registered' %></h1>
+    <form id="logoutForm" action="/auth/logout" method="get">
+      <button type="submit" class="btn btn-danger">Log Out</button>
+    </form>
+  </nav>
+</header>

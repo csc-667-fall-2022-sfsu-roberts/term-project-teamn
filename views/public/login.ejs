@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<%- include('../partials/head'); -%>
+
+<body>
+  <div class="wrapper">
+    <div class="text-center">
+      <h1>Login here</h1>
+    </div>
+    <div class="container">
+      <form id="loginForm" action="/auth/login" method="post">
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input type="text" name="username" class="form-control" id="loginUsername" placeholder="Enter your user name">
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" name="password" class="form-control" id="loginPassword1" placeholder="Enter your user password">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <a href="/auth/register" class="link-primary" value="login">Sign Up</a>
+      </form>
+    </div>
+</body>
+<%- include('../partials/footer'); -%>
+</div>
+
+
+</html>

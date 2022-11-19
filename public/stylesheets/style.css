@@ -1,8 +1,146 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+button {
+	border-radius: 0 !important;
+}
+
+.wrapper {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+footer {
+	text-align: center;
+	border-top: rgb(50, 50, 50) solid 1px;
+	margin-top: 1px;
+}
+
+header {
 }
 
 a {
-  color: #00B7FF;
+	color: rgb(0, 0, 255);
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	flex: auto;
+	max-width: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+.container > form {
+	width: 100%;
+}
+
+.main {
+	flex: auto;
+	display: grid;
+	grid-template-columns: 3fr 1fr;
+	column-gap: 10px;
+}
+
+.main > * {
+	margin: 0;
+	padding: 0;
+}
+
+#registrationForm,
+#loginForm {
+	width: 100%;
+	max-width: 500px;
+}
+
+#registrationForm > button,
+#loginForm > button {
+	margin-right: 10px;
+}
+
+form {
+	max-width: 500px;
+}
+
+.chat {
+	border-left: 1px rgb(50, 50, 50) solid;
+	margin-right: 5px;
+	display: flex;
+	flex-direction: column;
+}
+
+.table {
+	margin: 0 5px;
+	display: flex;
+	flex-direction: column;
+	min-width: 800px;
+}
+
+#leftMenu {
+	display: flex;
+}
+
+#createGame {
+	flex-grow: 1;
+}
+
+#joinGame {
+	flex-grow: 1;
+}
+
+#createGame > button,
+#joinGame > button {
+	width: 100%;
+}
+
+#mainMenu {
+}
+
+#message-box {
+	flex-grow: 1;
+	border-bottom: rgb(50, 50, 50) solid 1px;
+	margin-bottom: 1px;
+}
+
+#inputBox {
+	display: flex;
+	flex-wrap: nowrap;
+}
+
+#inputBox > input {
+	width: 100%;
+	border: none;
+}
+
+#chatMenu {
+	display: flex;
+}
+
+#globalChat {
+	flex-grow: 1;
+}
+
+#privateChat {
+	flex-grow: 1;
+}
+
+#globalChat > button,
+#privateChat > button {
+	width: 100%;
+}
+
+#welcomeLink {
+	font-size: 8rem;
+}
+
+#welcomeLink > a {
+	text-decoration: none;
 }

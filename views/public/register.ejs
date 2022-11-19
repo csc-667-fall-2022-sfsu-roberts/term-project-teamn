@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<%- include('../partials/head'); -%>
+
+<body>
+  <div class="wrapper">
+    <div class="text-center">
+      <h1>Register here</h1>
+    </div>
+    <div class="container">
+      <form id="registrationForm" action="/auth/register" method="post">
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input type="text" name="username" class="form-control" id="registrationUsername" placeholder="Enter your user name">
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email address</label>
+          <input type="email" name="email" class="form-control" id="registrationEmail" placeholder="Enter your user email">
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" name="password" class="form-control" id="registrationPassword1" placeholder="Enter your user password">
+        </div>
+        <!-- <div class="mb-3">
+          <label for="password2" class="form-label">Confirm password</label>
+          <input type="password" name="password2" class="form-control" id="registrationPassword2" placeholder="Confirm your user password">
+        </div> -->
+        <button type="submit" class="btn btn-primary" value="register">Submit</button>
+        <a href="/auth/login" class="link-primary">Login</a>
+      </form>
+    </div>
+</body>
+<%- include('../partials/footer'); -%>
+</div>
+
+
+</html>
