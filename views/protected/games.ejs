@@ -1,0 +1,24 @@
+<div class="joinGame">
+  <table class="table-responsive">
+    <thead>
+      <tr>
+        <th scope="col">id</th>
+        <th scope="col">Owner</th>
+        <th scope="col">Type</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% games.forEach(function(game) { %>
+      <tr>
+        <th scope="row"><%= game.id %></th>
+        <td><%= game.userId %></td>
+        <td><%= game.isPrivate === true ? 'Private' : 'Public' %></td>
+      </tr>
+      <% }); %>
+    </tbody>
+  </table>
+
+
+
+
+</div>

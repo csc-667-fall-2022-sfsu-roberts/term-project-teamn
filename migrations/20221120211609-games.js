@@ -3,22 +3,19 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
 	async up(queryInterface, Sequelize) {
-		await queryInterface.createTable('users', {
+		await queryInterface.createTable('games', {
 			id: {
 				type: Sequelize.INTEGER,
 				primaryKey: true,
 				autoIncrement: true,
 			},
-			username: {
-				type: Sequelize.STRING,
+			userId: {
+				type: Sequelize.INTEGER,
 				allowNull: false,
 			},
-			email: {
-				type: Sequelize.STRING,
-				allowNull: false,
-			},
-			password: {
-				type: Sequelize.STRING,
+			isPrivate: {
+				type: Sequelize.BOOLEAN,
+				defaultValue: false,
 				allowNull: false,
 			},
 			createdAt: {
@@ -26,10 +23,15 @@ module.exports = {
 				defaultValue: Sequelize.literal('NOW()'),
 				allowNull: false,
 			},
+			joinCode: {
+				type: Sequelize.STRING,
+				defaultValue: '',
+				allowNull: false,
+			},
 		});
 	},
 
 	async down(queryInterface, Sequelize) {
-		await queryInterface.dropTable('users');
+		await queryInterface.dropTable('games');
 	},
 };

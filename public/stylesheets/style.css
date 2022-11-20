@@ -4,7 +4,8 @@
 	padding: 0;
 }
 
-button {
+button,
+.btn {
 	border-radius: 0 !important;
 }
 
@@ -66,10 +67,6 @@ a {
 	margin-right: 10px;
 }
 
-form {
-	max-width: 500px;
-}
-
 .chat {
 	border-left: 1px rgb(50, 50, 50) solid;
 	margin-right: 5px;
@@ -89,19 +86,28 @@ form {
 }
 
 #createGame {
-	flex-grow: 1;
+	min-width: 800px;
+}
+
+#createGame > h1,
+#createGame > form {
+	text-align: center;
+}
+#createGame > h1 {
+	margin-bottom: 5rem;
+}
+
+#createGame > form input {
+	width: 300px;
+	height: 100px;
+	margin: 1rem;
 }
 
 #joinGame {
 	flex-grow: 1;
 }
 
-#createGame > button,
-#joinGame > button {
-	width: 100%;
-}
-
-#mainMenu {
+.main {
 }
 
 #message-box {
