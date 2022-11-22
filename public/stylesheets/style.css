@@ -4,25 +4,42 @@
 	padding: 0;
 }
 
+html {
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+	height: 100vh;
+	overflow: hidden;
+}
+
 button,
 .btn {
 	border-radius: 0 !important;
 }
 
 .wrapper {
-	min-height: 100vh;
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
+	min-height: 95vh;
+	max-height: 95vh;
+	min-width: 800px;
+	column-gap: 10px;
+}
+
+.main {
+	flex: 1;
 }
 
 footer {
+	height: 50px;
 	text-align: center;
 	border-top: rgb(50, 50, 50) solid 1px;
 	margin-top: 1px;
 }
 
 header {
+	height: 70px;
 }
 
 a {
@@ -45,10 +62,10 @@ a {
 }
 
 .main {
-	flex: auto;
-	display: grid;
-	grid-template-columns: 3fr 1fr;
-	column-gap: 10px;
+	display: flex;
+	height: calc(100vh - 125px);
+	min-height: calc(100vh - 125px);
+	max-height: calc(100vh - 125px);
 }
 
 .main > * {
@@ -72,6 +89,7 @@ a {
 	margin-right: 5px;
 	display: flex;
 	flex-direction: column;
+	width: 20rem;
 }
 
 .table {
@@ -85,29 +103,57 @@ a {
 	display: flex;
 }
 
-#createGame {
-	min-width: 800px;
+#joinGame {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
 }
 
-#createGame > h1,
-#createGame > form {
+#joinGame > h1,
+#joinGame > h2,
+#joinGame > form,
+#joinGame > h1,
+#joinGame > h2,
+#joinGame > form {
 	text-align: center;
 }
-#createGame > h1 {
-	margin-bottom: 5rem;
-}
 
-#createGame > form input {
+#joinGame > div > form input,
+#joinGame > div > form input {
 	width: 300px;
 	height: 100px;
 	margin: 1rem;
 }
-
-#joinGame {
-	flex-grow: 1;
+#joinGame > div,
+#joinGame > div {
+	justify-content: center;
 }
 
-.main {
+.my-games {
+	width: 100%;
+	flex-direction: column;
+	position: relative;
+	overflow-y: scroll;
+}
+.my-game,
+.my-game-code {
+	display: flex;
+	justify-content: space-around;
+	position: relative;
+	margin-top: 5px;
+	padding-top: 5px;
+	border-top: 1px solid rgb(50, 50, 50);
+}
+
+.my-game-code {
+	justify-content: flex-end;
+	margin-right: 5rem;
+	border: none;
+}
+
+.my-game-code .codeText {
+	font-weight: bolder;
+	color: green;
 }
 
 #message-box {
@@ -123,7 +169,9 @@ a {
 
 #inputBox > input {
 	width: 100%;
-	border: none;
+	border: 1px solid rgb(50, 50, 50);
+	margin: 3px;
+	height: 40px;
 }
 
 #chatMenu {

@@ -9,7 +9,6 @@ router.get('/', (request, response) => {
 
 	Games.getAllGames()
 		.then((games) => {
-			console.log(games);
 			response.render('protected/lobby', {
 				username,
 				userId,
@@ -23,11 +22,18 @@ router.get('/', (request, response) => {
 router.get('/create', (request, response) => {
 	const { username, userId } = request.session;
 
-	response.render('protected/create', {
-		username,
-		userId,
-		title: 'Create a game',
-	});
+	Games.getGamesByUserId({ userId })
+		.then((games) => {
+			response.render('protected/create', {
+				username,
+				userId,
+				games: games ? games : [],
+
+				title: 'Lobby',
+			});
+		})
+
+		.catch(handleNewPublicGameError(response, '/lobby'));
 });
 
 const handleNewPublicGameError = (response, redirectUri) => (error) => {
@@ -40,11 +46,19 @@ router.post('/generatePublicGame', (request, response) => {
 
 	Games.createPublicGame({ userId })
 		.then((res) => {
-			response.render('/lobby', {
-				username,
-				userId,
-				title: 'Create a game',
-			});
+			response.redirect('/lobby/create');
+		})
+		.catch(handleNewPublicGameError(response, '/lobby'));
+});
+
+router.post('/generatePrivateGame', (request, response) => {
+	const { userId } = request.session;
+
+	const code = Date.now();
+
+	Games.createPrivateGame({ userId, code })
+		.then((res) => {
+			response.redirect('/lobby/create');
 		})
 		.catch(handleNewPublicGameError(response, '/lobby'));
 });

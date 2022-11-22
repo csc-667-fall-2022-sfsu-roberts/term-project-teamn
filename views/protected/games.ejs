@@ -1,24 +1,27 @@
-<div class="joinGame">
-  <table class="table-responsive">
-    <thead>
-      <tr>
-        <th scope="col">id</th>
-        <th scope="col">Owner</th>
-        <th scope="col">Type</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% games.forEach(function(game) { %>
-      <tr>
-        <th scope="row"><%= game.id %></th>
-        <td><%= game.userId %></td>
-        <td><%= game.isPrivate === true ? 'Private' : 'Public' %></td>
-      </tr>
-      <% }); %>
-    </tbody>
-  </table>
+<div id="joinGame">
+  <h2>JOIN A PRIVATE ROOM</h2>
+  <form class="mx-5" action="/lobby/joinPrivateGame" method="post">
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="inputGroup-sizing-default">ENTER JOIN CODE</span>
+      <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+      <input class="btn btn-primary" type="submit" value="JOIN" />
+    </div>
+  </form>
 
 
 
-
+  <h2>LIST OF PUBLIC GAMES</h2>
+  <div class="my-games">
+    <% games.slice().reverse().forEach(function(game) { %>
+    <% if (game.isPrivate == false) { %>
+    <div class="my-game">
+      <p> <%= game.id %></p>
+      <p> <%= game.userId %></p>
+      <form class="mx-1" action="/lobby/join" method="post">
+        <input class="btn btn-success" type="submit" value="join" />
+      </form>
+    </div>
+    <% } %>
+    <% }); %>
+  </div>
 </div>

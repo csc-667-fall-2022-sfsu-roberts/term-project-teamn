@@ -1,9 +1,37 @@
-<div id="createGame">
+<div id="joinGame">
   <h1>Create a game:</h1>
-  <form class="mx-1" action="/lobby/generatePublicGame" method="post">
-    <input class="btn btn-secondary" type="submit" value="PUBLIC" />
-  </form>
-  <form class="mx-1" action="/lobby/generatePrivateGame">
-    <input class="btn btn-secondary" type="submit" value="PRIVATE" method="post" />
-  </form>
+  <div class="d-flex">
+    <form class="mx-1" action="/lobby/generatePublicGame" method="post">
+      <input class="btn btn-secondary" type="submit" value="PUBLIC" />
+    </form>
+    <form class="mx-1" action="/lobby/generatePrivateGame" method="post">
+      <input class="btn btn-secondary" type="submit" value="PRIVATE" />
+    </form>
+  </div>
+
+  <h2>My games:</h2>
+  <div class="my-games">
+    <% games.slice().reverse().forEach(function(game) { %>
+
+    <div class="my-game">
+      <p> <%= game.id %></p>
+      <p> <%= game.userId %></p>
+      <p> <%= game.isPrivate === true ? 'Private' : 'Public' %></p>
+      <form class="mx-1" action="/lobby/join" method="post">
+        <% if (game.isPrivate === true ) {%>
+        <input class="btn btn-primary" type="submit" value="join" />
+        <% }else{ %>
+        <input class="btn btn-success" type="submit" value="join" />
+        <% } %>
+      </form>
+    </div>
+    <% if (game.joinCode != "") { %>
+    <div class="my-game-code">
+      <p> code: </p>
+      <p class="codeText"> <%= game.joinCode %></p>
+    </div>
+    <% } %>
+
+    <% }); %>
+  </div>
 </div>
