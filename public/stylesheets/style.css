@@ -135,6 +135,7 @@ a {
 	flex-direction: column;
 	position: relative;
 	overflow-y: scroll;
+	text-align: center;
 }
 .my-game,
 .my-game-code {

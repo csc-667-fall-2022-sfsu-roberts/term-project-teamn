@@ -8,10 +8,10 @@ const CREATE_PRIVATE =
 	'INSERT INTO games ("userId", "joinCode", "isPrivate" ) VALUES (${userId}, ${joinCode}, true) RETURNING id';
 
 const GET_ALL_GAMES =
-	'SELECT games.id, "userId", "isPrivate", "joinCode", users.username FROM games, users where "userId" = "users"."id"';
+	'SELECT games.id, games."createdAt", "userId", "isPrivate", "joinCode", users.username FROM games, users where "userId" = "users"."id"';
 
 const GET_GAMES_BY_USERID =
-	'SELECT games.id, "userId", "isPrivate", "joinCode", users.username FROM games JOIN users on "userId" = users.id WHERE "userId"=${userId}';
+	'SELECT games.id, games."createdAt", "userId", "isPrivate", "joinCode", users.username FROM games JOIN users on "userId" = users.id WHERE "userId"=${userId}';
 
 const createPublicGame = ({ userId }) => {
 	return db.one(CREATE_PUBLIC, { userId: userId });

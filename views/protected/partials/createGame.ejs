@@ -13,10 +13,12 @@
   <div class="my-games">
     <% games.slice().reverse().forEach(function(game) { %>
 
+
+
     <div class="my-game">
-      <p> <%= game.id %></p>
-      <p> <%= game.username %></p>
-      <p> <%= game.isPrivate === true ? 'Private' : 'Public' %></p>
+      <p><b>game id: </b><%= game.id %></p>
+      <p><b>created</b><br><%= game.createdAt %></p>
+      <p><b>type</b><br><%= game.isPrivate === true ? 'Private' : 'Public' %></p>
       <form class="mx-1" action="/lobby/join" method="post">
         <% if (game.isPrivate === true ) {%>
         <input class="btn btn-primary" type="submit" value="join" />

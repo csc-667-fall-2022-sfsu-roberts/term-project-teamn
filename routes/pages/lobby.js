@@ -1,4 +1,5 @@
 const express = require('express');
+const moment = require('moment');
 
 const Games = require('../../db/games');
 
@@ -9,6 +10,10 @@ router.get('/', (request, response) => {
 
 	Games.getAllGames()
 		.then((games) => {
+			games.forEach((game) => {
+				game.createdAt = moment(game.createdAt).fromNow();
+			});
+
 			response.render('protected/lobby', {
 				username,
 				userId,
@@ -24,6 +29,10 @@ router.get('/create', (request, response) => {
 
 	Games.getGamesByUserId({ userId })
 		.then((games) => {
+			games.forEach((game) => {
+				game.createdAt = moment(game.createdAt).fromNow();
+			});
+
 			response.render('protected/create', {
 				username,
 				userId,
