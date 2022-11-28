@@ -15,7 +15,7 @@
 
     <div class="my-game">
       <p> <%= game.id %></p>
-      <p> <%= game.userId %></p>
+      <p> <%= game.username %></p>
       <p> <%= game.isPrivate === true ? 'Private' : 'Public' %></p>
       <form class="mx-1" action="/lobby/join" method="post">
         <% if (game.isPrivate === true ) {%>

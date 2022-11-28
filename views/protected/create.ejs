@@ -2,13 +2,12 @@
 <html>
 <%- include('../partials/head',{username: username}); -%>
 
-
 <body>
   <div class="wrapper">
     <%- include('../partials/navbar'); -%>
     <div class="main">
-      <%- include('./createGame'); -%>
-      <%- include('./chat'); -%>
+      <%- include('./partials/createGame'); -%>
+      <%- include('./partials/chat', {inGame:false}); -%>
     </div>
     <%- include('../partials/footer'); -%>
   </div>

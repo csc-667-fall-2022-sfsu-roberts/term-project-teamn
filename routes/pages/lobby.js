@@ -28,7 +28,6 @@ router.get('/create', (request, response) => {
 				username,
 				userId,
 				games: games ? games : [],
-
 				title: 'Lobby',
 			});
 		})

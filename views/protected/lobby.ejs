@@ -7,8 +7,8 @@
     <%- include('../partials/navbar'); -%>
 
     <div class="main">
-      <%- include('./games', {games:games}); -%>
-      <%- include('./chat'); -%>
+      <%- include('./partials/games', {games:games}); -%>
+      <%- include('./partials/chat', {inGame:false}); -%>
     </div>
 
     <%- include('../partials/footer'); -%>

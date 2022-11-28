@@ -21,25 +21,26 @@ button,
 .wrapper {
 	display: flex;
 	flex-direction: column;
-	min-height: 95vh;
-	max-height: 95vh;
+	min-height: 100vh;
+	max-height: 100vh;
+	height: 100vh;
 	min-width: 800px;
 	column-gap: 10px;
 }
 
 .main {
-	flex: 1;
+	height: 85vh;
 }
 
 footer {
-	height: 50px;
+	height: 5vh;
 	text-align: center;
 	border-top: rgb(50, 50, 50) solid 1px;
 	margin-top: 1px;
 }
 
 header {
-	height: 70px;
+	height: 10vh;
 }
 
 a {

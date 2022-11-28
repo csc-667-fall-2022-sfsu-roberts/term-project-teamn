@@ -7,21 +7,21 @@ const CREATE_PUBLIC =
 const CREATE_PRIVATE =
 	'INSERT INTO games ("userId", "joinCode", "isPrivate" ) VALUES (${userId}, ${joinCode}, true) RETURNING id';
 
-const GET_ALL_GAMES = 'SELECT * FROM games';
+const GET_ALL_GAMES =
+	'SELECT games.id, "userId", "isPrivate", "joinCode", users.username FROM games, users where "userId" = "users"."id"';
 
-const GET_GAMES_BY_USERID = 'SELECT * FROM games WHERE "userId"=${userId}';
+const GET_GAMES_BY_USERID =
+	'SELECT games.id, "userId", "isPrivate", "joinCode", users.username FROM games JOIN users on "userId" = users.id WHERE "userId"=${userId}';
 
 const createPublicGame = ({ userId }) => {
 	return db.one(CREATE_PUBLIC, { userId: userId });
 };
 
 const createPrivateGame = ({ userId, code }) => {
-	console.log(code);
-
 	return bcrypt.hash(toString(code), 10).then((hash) => {
 		db.one(CREATE_PRIVATE, {
 			userId: userId,
-			joinCode: hash.substring(0, 10),
+			joinCode: hash.substring(hash.length - 10, hash.length),
 		});
 	});
 };
