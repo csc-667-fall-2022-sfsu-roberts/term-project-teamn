@@ -175,7 +175,13 @@ a {
 }
 
 #chat-bottom {
-	height: 30px;
+	height: 55px;
+	margin-left: 5px;
+}
+
+#chat-bottom > input {
+	height: 50px;
+	padding: 0 10px;
 }
 
 #message-field {
@@ -229,6 +235,7 @@ a {
 	border-radius: 5%;
 	border-top: 1px lightgray solid;
 	border-bottom: 1px lightgray solid;
+	padding: 0 10px;
 }
 
 .message-body-right {
