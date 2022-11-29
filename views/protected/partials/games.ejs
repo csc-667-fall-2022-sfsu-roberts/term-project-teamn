@@ -13,7 +13,7 @@
     <% games.slice().reverse().forEach(function(game) { %>
     <% if (game.isPrivate == false) { %>
     <div class="my-game">
-      <p><b>room #</b><%= game.id %></p>
+      <p><b>game id:</b><br><%= game.id %></p>
       <p><b>owner:</b><br><i><%= game.username %></i></p>
       <p><b>created</b><br><%= game.createdAt %></p>
       <form class="mx-1" action="/lobby/join" method="post">

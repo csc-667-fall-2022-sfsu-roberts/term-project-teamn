@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html>
-<%- include('../partials/head',{username: username}); -%>
+<%- include('../protected/partials/head',{username: username}); -%>
 
 <body>
   <div class="wrapper">
-    <%- include('../partials/navbar'); -%>
+    <%- include('./partials/navbar'); -%>
 
     <div class="main">
       <%- include('./partials/games', {games:games}); -%>
-      <%- include('./partials/chat', {inGame:false}); -%>
+      <%- include('./partials/chat', {inGame:false, userId:userId}); -%>
+
     </div>
 
-    <%- include('../partials/footer'); -%>
+    <%- include('../protected/partials/footer'); -%>
   </div>
 </body>
 

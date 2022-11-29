@@ -85,14 +85,6 @@ a {
 	margin-right: 10px;
 }
 
-.chat {
-	border-left: 1px rgb(50, 50, 50) solid;
-	margin-right: 5px;
-	display: flex;
-	flex-direction: column;
-	width: 20rem;
-}
-
 .table {
 	margin: 0 5px;
 	display: flex;
@@ -157,11 +149,43 @@ a {
 	font-weight: bolder;
 	color: green;
 }
+.chat {
+	border-left: 1px rgb(50, 50, 50) solid;
+	margin-right: 5px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	width: 20rem;
+	height: 100%;
+}
 
-#message-box {
-	flex-grow: 1;
-	border-bottom: rgb(50, 50, 50) solid 1px;
-	margin-bottom: 1px;
+#chat-top {
+	display: flex;
+	height: 30px;
+}
+
+#chat-middle {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+
+	height: 90%;
+	width: 100%;
+}
+
+#chat-bottom {
+	height: 30px;
+}
+
+#message-field {
+	width: 100%;
+}
+
+#messages {
+	display: flex;
+	flex-direction: column;
+	overflow: scroll;
+	width: 100%;
 }
 
 #inputBox {
@@ -176,8 +200,59 @@ a {
 	height: 40px;
 }
 
-#chatMenu {
+.sender {
+	font-weight: 600;
+	width: 100%;
+	color: blue;
+}
+
+.content {
+	font-style: italic;
+	font-weight: 600;
+	word-break: break-all;
+}
+
+.messages-right {
+	text-align: end;
+}
+
+.messages-right::after {
+	content: ' (you)';
+}
+
+.message-body {
+	width: 100%;
 	display: flex;
+	flex-direction: column;
+	margin-bottom: 15px;
+	border-radius: 5%;
+	border-top: 1px lightgray solid;
+	border-bottom: 1px lightgray solid;
+}
+
+.message-body-right {
+	background: lightgray;
+}
+
+.time {
+	width: 100%;
+	text-align: right;
+}
+
+#chats {
+	width: 100%;
+}
+
+#chat-global {
+	z-index: 2;
+}
+
+#chat-private {
+	z-index: 1;
+}
+
+#chat-private {
+	display: none;
 }
 
 #globalChat {

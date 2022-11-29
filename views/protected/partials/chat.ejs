@@ -1,5 +1,5 @@
 <div class="chat">
-  <div id="chatMenu">
+  <div id="chat-top">
     <div id="globalChat">
       <button>GLOBAL</button>
     </div>
@@ -10,11 +10,38 @@
     </div>
     <% } %>
   </div>
-  <div id='message-box'></div>
-  <div id='inputBox'>
-    <input className='input-group-text input-message' type='text' name='messsage' placeholder='...' id='msg-123' />
-    <button id='message-btn' className='btn btn-secondary send-btn ' type='submit' value='send'>
-      Send
-    </button>
+  <div id='chat-middle'>
+    <div id="chats">
+      <div id="chat-global">
+        <template id="message">
+          <div class="message-body">
+            <span class="sender"></span>
+            <span class="content"></span>
+            <small class="time"><span class="timestamp text-muted"></span></small>
+          </div>
+        </template>
+
+        <div id="messages"> </div>
+      </div>
+
+      <div id="chat-private">
+        <template id="message-private">
+          <div class="message-body-private">
+            <span class="sender-private"></span>
+            <span class="content-private"></span>
+            <small class="time-private"><span class="timestamp text-muted"></span></small>
+          </div>
+        </template>
+
+        <div id="messages-private">test</div>
+      </div>
+
+    </div>
+
+
+  </div>
+
+  <div id="chat-bottom" class="userId-<%- userId -%>">
+    <input placeholder='...' type="text" id="message-field" />
   </div>
 </div>
