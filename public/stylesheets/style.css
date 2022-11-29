@@ -155,7 +155,8 @@ a {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	width: 20rem;
+	width: 30rem;
+	min-width: 20rem;
 	height: 100%;
 }
 
@@ -241,6 +242,8 @@ a {
 
 #chats {
 	width: 100%;
+	height: 100%;
+	overflow: scroll;
 }
 
 #chat-global {

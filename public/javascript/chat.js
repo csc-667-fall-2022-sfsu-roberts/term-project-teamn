@@ -43,6 +43,11 @@ socket.on('chat:0', ({ sender, user, message, timestamp }) => {
 
 	messages.appendChild(content);
 
+	document.getElementById('chats').scrollBy({
+		top: 100,
+		behavior: 'smooth',
+	});
+
 	messages.scrollBy({
 		top: 100,
 		behavior: 'smooth',
