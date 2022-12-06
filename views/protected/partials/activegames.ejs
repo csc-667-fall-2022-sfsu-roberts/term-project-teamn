@@ -1,0 +1,24 @@
+<div id="joinGame">
+
+  <h2>LIST OF ACTIVE GAMES</h2>
+  <div class="my-games">
+    <% games.slice().reverse().forEach(function(game) { %>
+
+    <div class="my-game">
+      <p><b>game id:</b><br><%= game.id %></p>
+      <% if (game.isPrivate == true) { %>
+      <p><i>Private</i></p>
+      <% } else {%>
+      <p><i>Public</i></p>
+
+      <% } %>
+      <p><b>created</b><br><%= game.createdAt %></p>
+      <p><b># of players</b><br><%= game.number %> / 4</p>
+      <form class="mx-1" action="/lobby/game/<%= game.id %>" method="post">
+        <input class="btn btn-warning" type="submit" value="return" />
+      </form>
+    </div>
+
+    <% }); %>
+  </div>
+</div>

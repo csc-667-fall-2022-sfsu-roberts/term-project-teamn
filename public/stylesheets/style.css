@@ -155,7 +155,7 @@ a {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	width: 30rem;
+	width: 20rem;
 	min-width: 20rem;
 	height: 100%;
 }
