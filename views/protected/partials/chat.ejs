@@ -1,14 +1,53 @@
-<div class="chat">
+<% if (inGame === true) { %>
+<div class="privateChat">
+  <div id="private-chat-top">
+    <div id="privateChat">
+      <button id="socket-chat" value="<%- gameId -%>">Game Chat #<%- gameId -%></button>
+    </div>
+
+  </div>
+  <div id='private-chat-middle'>
+    <div id="chats">
+      <div id="private-chat-global">
+        <template id="private-message">
+          <div class="private-message-body">
+            <span class="private-sender"></span>
+            <span class="private-content"></span>
+            <small class="private-time"><span class="private-timestamp text-muted"></span></small>
+          </div>
+        </template>
+
+        <div id="private-messages"> </div>
+      </div>
+
+      <div id="private-chat-private">
+        <template id="private-message-private">
+          <div class="private-message-body-private">
+            <span class="private-sender-private"></span>
+            <span class="private-content-private"></span>
+            <small class="private-time-private"><span class="private-timestamp text-muted"></span></small>
+          </div>
+        </template>
+
+        <div id="private-messages-private"></div>
+      </div>
+
+    </div>
+
+
+  </div>
+
+  <div id="private-chat-bottom" class="private-userId-<%- userId -%>">
+    <input placeholder='...' type="text" id="private-message-field" />
+  </div>
+</div>
+<% } %>
+<div class=" chat">
   <div id="chat-top">
     <div id="globalChat">
       <button>GLOBAL</button>
     </div>
 
-    <% if (inGame === true) { %>
-    <div id="privateChat">
-      <button>PRIVATE</button>
-    </div>
-    <% } %>
   </div>
   <div id='chat-middle'>
     <div id="chats">

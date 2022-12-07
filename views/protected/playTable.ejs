@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<%- include('../protected/partials/head',{username: username}); -%>
+
+<body>
+  <div class="wrapper">
+    <%- include('./partials/navbar'); -%>
+    <div class="main">
+      <%- include('./partials/gameTable',{gameId: gameId}); -%>
+      <%- include('./partials/chat', {inGame:true, gameId: gameId}); -%>
+    </div>
+    <%- include('../protected/partials/footer'); -%>
+  </div>
+</body>
+
+</html>

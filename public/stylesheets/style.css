@@ -149,85 +149,100 @@ a {
 	font-weight: bolder;
 	color: green;
 }
-.chat {
+.chat,
+.privateChat {
 	border-left: 1px rgb(50, 50, 50) solid;
 	margin-right: 5px;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	width: 20rem;
-	min-width: 20rem;
+	width: 15rem;
+	min-width: 15rem;
+	max-width: 15rem;
 	height: 100%;
 }
 
-#chat-top {
+#chat-top,
+#chat-top,
+#private-chat-top,
+#private-chat-top {
 	display: flex;
 	height: 30px;
 }
 
-#chat-middle {
+#chat-middle,
+#chat-middle,
+#private-chat-middle,
+#private-chat-middle {
 	display: flex;
 	flex-direction: column;
 	align-items: flex-end;
 
-	height: 90%;
+	height: 85%;
 	width: 100%;
 }
 
-#chat-bottom {
+#chat-bottom,
+#private-chat-bottom {
 	height: 55px;
 	margin-left: 5px;
 }
 
-#chat-bottom > input {
+#chat-bottom > input,
+#private-chat-bottom > input {
 	height: 50px;
 	padding: 0 10px;
-}
-
-#message-field {
 	width: 100%;
 }
 
-#messages {
+#messages,
+#private-messages {
 	display: flex;
 	flex-direction: column;
 	overflow: scroll;
 	width: 100%;
 }
 
-#inputBox {
+#inputBox,
+#private-inputBox {
 	display: flex;
 	flex-wrap: nowrap;
 }
 
-#inputBox > input {
+#inputBox > input,
+#private-inputBox > input {
 	width: 100%;
 	border: 1px solid rgb(50, 50, 50);
 	margin: 3px;
 	height: 40px;
 }
 
-.sender {
+.sender,
+.private-sender {
 	font-weight: 600;
 	width: 100%;
 	color: blue;
 }
 
-.content {
+.content,
+.private-content {
 	font-style: italic;
 	font-weight: 600;
 	word-break: break-all;
 }
 
-.messages-right {
+.messages-right,
+.private-messages-right {
 	text-align: end;
 }
 
-.messages-right::after {
+.messages-right::after,
+.private-messages-right::after {
 	content: ' (you)';
 }
 
-.message-body {
+.message-body,
+.private-message-body {
 	width: 100%;
 	display: flex;
 	flex-direction: column;
@@ -238,16 +253,19 @@ a {
 	padding: 0 10px;
 }
 
-.message-body-right {
+.message-body-right,
+.private-message-body-right {
 	background: lightgray;
 }
 
-.time {
+.time,
+.private-time {
 	width: 100%;
 	text-align: right;
 }
 
 #chats {
+	max-width: 30rem;
 	width: 100%;
 	height: 100%;
 	overflow: scroll;
@@ -284,4 +302,10 @@ a {
 
 #welcomeLink > a {
 	text-decoration: none;
+}
+
+.gameTable {
+	width: 100%;
+	border: 5px solid blue;
+	margin: 0 1px;
 }

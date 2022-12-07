@@ -3,7 +3,7 @@
   <form class="mx-5" action="/lobby/joinPrivateGame" method="post">
     <div class="input-group mb-3">
       <span class="input-group-text" id="inputGroup-sizing-default">ENTER JOIN CODE</span>
-      <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+      <input type="text" name="code" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
       <input class="btn btn-primary" type="submit" value="JOIN" />
     </div>
   </form>
@@ -14,6 +14,7 @@
     <% if (game.isPrivate == false) { %>
     <div class="my-game">
       <p><b>game id:</b><br><%= game.id %></p>
+      <p><b>seats:</b><br><%= game.number %>/4</p>
       <p><b>owner:</b><br><i><%= game.username %></i></p>
       <p><b>created</b><br><%= game.createdAt %></p>
       <form class="mx-1" action="/lobby/join/<%= game.id %>" method="post">

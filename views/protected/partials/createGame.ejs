@@ -17,6 +17,7 @@
 
     <div class="my-game">
       <p><b>game id:<br></b><%= game.id %></p>
+      <p><b>seats:</b><br><%= game.number %>/4</p>
       <p><b>created</b><br><%= game.createdAt %></p>
       <p><b>type</b><br><%= game.isPrivate === true ? 'Private' : 'Public' %></p>
       <form class="mx-1" action="/lobby/join" method="post">

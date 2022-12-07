@@ -86,7 +86,18 @@ router.post('/generatePrivateGame', (request, response) => {
 
 	Games.createPrivateGame({ userId, code })
 		.then((res) => {
-			response.redirect('/lobby/create');
+			response.redirect('/lobby/mygames');
+		})
+		.catch(handleNewPublicGameError(response, '/lobby'));
+});
+
+router.post('/joinPrivateGame', (request, response) => {
+	const { userId } = request.session;
+	const { code } = request.body;
+
+	Games.joinPrivateGame({ userId, code })
+		.then((res) => {
+			response.redirect('/lobby/mygames');
 		})
 		.catch(handleNewPublicGameError(response, '/lobby'));
 });
@@ -97,9 +108,22 @@ router.post('/join/:id', (request, response) => {
 
 	Games.joinPublicGame({ userId, gameId })
 		.then((res) => {
-			response.redirect('/lobby/create');
+			response.redirect('/lobby/mygames');
 		})
 		.catch(handleNewPublicGameError(response, '/lobby'));
+});
+
+router.get('/game/:id', (request, response) => {
+	const { username, userId } = request.session;
+
+	const gameId = request.params.id;
+
+	response.render('protected/playTable', {
+		username: username,
+		title: 'Lobby',
+		userId: userId,
+		gameId: gameId,
+	});
 });
 
 module.exports = router;
