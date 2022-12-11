@@ -19,7 +19,11 @@ const GET_MY_GAMES =
 	'select * from game_users join games on game_id=id and user_id=${userId}';
 
 const ADD_USER_SQL =
-	'INSERT INTO game_users (game_id, user_id) VALUES (${game_id}, ${userId}) RETURNING game_id';
+	'INSERT INTO game_users (game_id, user_id, seat) VALUES (${game_id}, ${userId}, ' +
+	'(SELECT (SELECT COALESCE((SELECT seat FROM game_users WHERE game_id = ${game_id} ORDER BY seat DESC LIMIT 1), 0))+1)) RETURNING game_id';
+
+const GET_GAME =
+	'SELECT * FROM games WHERE id = ${game_id}'
 
 const LOOKUP_USER_IN_GAMEUSERS_BY_ID =
 	'select user_id from game_users where game_id=${game_id} and user_id=${userId}';
@@ -30,6 +34,21 @@ const COUNT_PLAYERS =
 const UPDATE_GAME_PLAYERS_COUNT =
 	'update games set number=number+1 where id=${game_id}';
 
+const GET_UNUSED_CARDS =
+	'SELECT * FROM cards WHERE id NOT IN (SELECT card_id FROM game_cards WHERE game_id = ${game_id});';
+
+const GIVE_CARD_TO_SEAT =
+	'INSERT INTO game_cards (game_id, card_id, user_id) VALUES (${gameId}, ${cardId}, (SELECT user_id FROM game_users WHERE game_id = ${gameId} AND seat = ${seat}))';
+
+const GET_CURRENT_PLAYER =
+	'SELECT seat FROM game_users WHERE game_id=${game_id} AND current = TRUE;';
+
+const SET_CURRENT_SEAT =
+	'UPDATE game_users SET current = ${current} WHERE game_id = ${gameId} AND seat = ${seat}'
+
+const GET_PLAYER_SEAT =
+	'SELECT seat FROM game_users WHERE game_id=${game_id} AND user_id=${user_id};';
+
 const createPublicGame = ({ userId }) => {
 	return db
 		.one(CREATE_PUBLIC, { userId: userId })
@@ -39,6 +58,7 @@ const createPublicGame = ({ userId }) => {
 		})
 		.then((game_id) => {
 			db.query(UPDATE_GAME_PLAYERS_COUNT, { game_id: game_id });
+			return game_id;
 		});
 };
 
@@ -54,6 +74,7 @@ const createPrivateGame = ({ userId, code }) => {
 			})
 			.then((game_id) => {
 				db.query(UPDATE_GAME_PLAYERS_COUNT, { game_id: game_id });
+				return game_id
 			});
 	});
 };
@@ -74,6 +95,10 @@ const countPlayers = ({ game_id }) => {
 	return db.any(COUNT_PLAYERS, { game_id: game_id });
 };
 
+const getGame = ({ game_id }) => {
+	return db.one(GET_GAME, { game_id })
+}
+
 const joinPublicGame = ({ userId, gameId }) => {
 	return db
 		.none(LOOKUP_USER_IN_GAMEUSERS_BY_ID, {
@@ -89,7 +114,6 @@ const joinPublicGame = ({ userId, gameId }) => {
 const joinPrivateGame = ({ userId, code }) => {
 	return db
 		.one(GET_GAMES_BY_CODE, { userId, code })
-
 		.then((el) => {
 			db.none(LOOKUP_USER_IN_GAMEUSERS_BY_ID, {
 				game_id: el.id,
@@ -98,17 +122,53 @@ const joinPrivateGame = ({ userId, code }) => {
 			return el;
 		})
 		.then((el) => {
-			db.one(ADD_USER_SQL, { game_id: el.id, userId });
+			db.one(ADD_USER_SQL, { game_id: el.id, userId })
 			return el;
 		})
-
 		.then((el) => {
 			db.query(UPDATE_GAME_PLAYERS_COUNT, { game_id: el.id });
+			return el;
 		})
 		.catch((err) => {
 			return console.log(err);
 		});
 };
+
+const getUnusedCards = ({ gameId }) => {
+	return db.any(GET_UNUSED_CARDS, {
+		game_id: gameId
+	})
+	.catch((err) => {
+		return console.log(err);
+	});
+}
+
+const giveCardToPlayer = ({ gameId, cardId, seat }) => {
+	return db.any(GIVE_CARD_TO_SEAT, {
+		gameId,
+		cardId,
+		seat,
+	})
+}
+
+const gameStarted = ({ gameId }) => {
+	return db.none(GET_CURRENT_PLAYER, {
+		game_id: gameId,
+	})
+}
+
+const updateSeatState = ({gameId, seat, current}) => {
+	return db.any(SET_CURRENT_SEAT, {
+		gameId, seat, current
+	})
+}
+
+const getPlayerSeat = ({gameId, userId}) => {
+	return db.one(GET_PLAYER_SEAT, {
+		game_id: gameId,
+		user_id: userId,
+	})
+}
 
 module.exports = {
 	countPlayers,
@@ -119,4 +179,10 @@ module.exports = {
 	getGamesByUserId,
 	getAllGames,
 	createPublicGame,
+	getGame,
+	getUnusedCards,
+	giveCardToPlayer,
+	gameStarted,
+	updateSeatState,
+	getPlayerSeat,
 };

@@ -6,10 +6,13 @@
   <div class="wrapper">
     <%- include('./partials/navbar'); -%>
     <div class="main">
+      <span id="gameIdSpan" style="display: none"><%= gameId %>%></span>
+      <span id="seatSpan" style="display: none"><%= seat %>%></span>
       <%- include('./partials/gameTable',{gameId: gameId}); -%>
       <%- include('./partials/chat', {inGame:true, gameId: gameId}); -%>
     </div>
     <%- include('../protected/partials/footer'); -%>
+    <script type="text/javascript" src="/javascript/game.js"></script>
   </div>
 </body>
 
