@@ -11,7 +11,6 @@ if (process.env.NODE_ENV === 'development') {
 
 const sessionInstance = require('./app-config/session');
 
-
 const indexRouter = require('./routes/pages/index');
 const usersRouter = require('./routes/pages/users');
 const testsRouter = require('./routes/pages/tests');
