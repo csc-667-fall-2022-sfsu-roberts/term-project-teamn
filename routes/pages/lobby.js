@@ -146,7 +146,7 @@ router.get('/game/:id', async (request, response) => {
 		seat: userSeat.seat
 	});
 
-	await sleep(5000);
+	await sleep(3000);
 
 
 	if (game.number === 2 && !gameStarted) {

@@ -49,6 +49,27 @@ const SET_CURRENT_SEAT =
 const GET_PLAYER_SEAT =
 	'SELECT seat FROM game_users WHERE game_id=${game_id} AND user_id=${user_id};';
 
+const GET_CURRENT_SEAT =
+	'SELECT user_id, seat FROM game_users WHERE game_id=${game_id} AND current=TRUE;';
+
+const GET_PLAYER_CARDS =
+	'SELECT * FROM game_cards JOIN cards c on c.id = game_cards.card_id WHERE game_id=${gameId} AND user_id=${userId};'
+
+const GET_PLAYER_CARD =
+	'SELECT * FROM game_cards WHERE game_id=${gameId} AND user_id=${userId} AND card_id=${cardId}'
+
+const DELETE_CARD =
+	'DELETE FROM game_cards WHERE game_id = ${gameId} AND card_id = ${cardId} AND user_id = ${userId}'
+
+const CLEANUP_GAME =
+	'DELETE FROM games WHERE id=${gameId}';
+
+const CLEANUP_GAME_CARDS =
+	'DELETE FROM game_cards WHERE game_id=${gameId}';
+
+const CLEANUP_GAME_USERS =
+	'DELETE FROM game_users WHERE game_id=${gameId}';
+
 const createPublicGame = ({ userId }) => {
 	return db
 		.one(CREATE_PUBLIC, { userId: userId })
@@ -170,6 +191,41 @@ const getPlayerSeat = ({gameId, userId}) => {
 	})
 }
 
+const getCurrentSeat = ({gameId}) => {
+	return db.one(GET_CURRENT_SEAT, {
+		game_id: gameId,
+	})
+}
+
+const getPlayerCards = ({gameId, userId}) => {
+	return db.any(GET_PLAYER_CARDS, {
+		gameId,
+		userId,
+	})
+}
+
+const playerHasCard = ({gameId, userId, cardId}) => {
+	return db.one(GET_PLAYER_CARD, {
+		gameId,
+		userId,
+		cardId,
+	})
+}
+
+const deleteCard = ({gameId, userId, cardId}) => {
+	return db.any(DELETE_CARD, {
+		gameId,
+		userId,
+		cardId,
+	})
+}
+
+const cleanupGame = ({gameId}) => {
+	return db.any(CLEANUP_GAME_CARDS, { gameId })
+		.then(() => db.any(CLEANUP_GAME_USERS, { gameId }))
+		.then(() => db.any(CLEANUP_GAME, { gameId }))
+}
+
 module.exports = {
 	countPlayers,
 	getMyGames,
@@ -185,4 +241,9 @@ module.exports = {
 	gameStarted,
 	updateSeatState,
 	getPlayerSeat,
+	getCurrentSeat,
+	getPlayerCards,
+	playerHasCard,
+	deleteCard,
+	cleanupGame,
 };

@@ -2,25 +2,67 @@ const gameSocket = io();
 
 const gameId = parseInt(document.querySelector('#gameIdSpan').innerText);
 const ownSeat = parseInt(document.querySelector('#seatSpan').innerText);
-console.log(gameId);
-console.log(ownSeat);
+
+const playCard = async (id) => {
+	await fetch(`/play/${gameId}`, {
+		method: 'post',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({
+			action: 'playCard',
+			card: id,
+		}),
+	})
+}
 
 gameSocket.on(`setPlayerCards:${gameId}`, ({seat, cards}) => {
-	const board = document.querySelector('#board');
-	const oldSeat = document.querySelector(`#seat-${seat}`);
+	if (seat !== ownSeat) {
+		const board = document.querySelector('#board');
+		const oldSeat = document.querySelector(`#seat-${seat}`);
 
-	if (oldSeat) {
-		oldSeat.remove();
+		const seatEl = oldSeat || document.createElement('p');
+		seatEl.id = `seat-${seat}`;
+		seatEl.innerText = `Seat ${seat} has ${cards.length} cards`
+
+		board.appendChild(seatEl);
+	} else {
+		const selfCards = document.querySelector('#selfCards');
+		selfCards.innerHTML = "";
+
+		cards.forEach((card) => {
+			const cardEl = document.createElement('button');
+			cardEl.textContent = `Play ${card.color} ${card.type}`;
+			cardEl.addEventListener('click', async () => {
+				await playCard(card.id);
+			})
+			selfCards.appendChild(cardEl);
+		})
 	}
-
-	const seatEl = document.createElement('p');
-	seatEl.id = `#seat-${seat}`;
-	seatEl.innerText = JSON.stringify(cards)
-
-	board.appendChild(seatEl);
 });
 
 gameSocket.on(`setTurnPlayer:${gameId}`, ({seat}) => {
-	const actions = document.querySelector('#actions');
-	actions.textContent = seat === ownSeat ? 'Your turn' : 'Not your turn'
+	const selfTurn = seat === ownSeat;
+
+	document.querySelector('#turnText').innerText = selfTurn ? 'Your turn' : 'Not your turn';
+	const takeCardButton = document.querySelector('#takeCard');
+	takeCardButton.disabled = !selfTurn;
+
+	const selfCards = document.querySelector('#selfCards');
+	selfCards.childNodes.forEach((child) => {
+		child.disabled = !selfTurn;
+	})
+});
+
+document.querySelector('#takeCard')
+	.addEventListener('click', async () => {
+		await fetch(`/play/${gameId}`, {
+			method: 'post',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({
+				action: 'takeCard'
+			}),
+		})
+	});
+
+gameSocket.on(`endGame:${gameId}`, () => {
+	window.location.href = '/lobby'
 });
