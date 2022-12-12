@@ -13,7 +13,7 @@
 
       <% } %>
       <p><b>created</b><br><%= game.createdAt %></p>
-      <p><b># of players</b><br><%= game.number %> / 4</p>
+      <p><b># of players</b><br><%= game.number %> / <%= game.max_players %></p>
       <form class="mx-1" action="/lobby/game/<%= game.id %>" method="get">
         <input class="btn btn-warning" type="submit" value="return" />
       </form>

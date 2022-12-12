@@ -55,6 +55,12 @@ const GET_CURRENT_SEAT =
 const GET_PLAYER_CARDS =
 	'SELECT * FROM game_cards JOIN cards c on c.id = game_cards.card_id WHERE game_id=${gameId} AND user_id=${userId};'
 
+const GET_SEAT_CARDS =
+	'SELECT * FROM game_cards' +
+	' JOIN cards c on c.id = game_cards.card_id' +
+	' JOIN game_users gu on game_cards.game_id = gu.game_id and game_cards.user_id = gu.user_id' +
+	' WHERE game_cards.game_id = ${gameId} AND seat=${seat};'
+
 const GET_PLAYER_CARD =
 	'SELECT * FROM game_cards WHERE game_id=${gameId} AND user_id=${userId} AND card_id=${cardId}'
 
@@ -174,7 +180,7 @@ const giveCardToPlayer = ({ gameId, cardId, seat }) => {
 }
 
 const gameStarted = ({ gameId }) => {
-	return db.none(GET_CURRENT_PLAYER, {
+	return db.any(GET_CURRENT_PLAYER, {
 		game_id: gameId,
 	})
 }
@@ -202,6 +208,13 @@ const getPlayerCards = ({gameId, userId}) => {
 	return db.any(GET_PLAYER_CARDS, {
 		gameId,
 		userId,
+	})
+}
+
+const getSeatCards = ({gameId, seat}) => {
+	return db.any(GET_SEAT_CARDS, {
+		gameId,
+		seat,
 	})
 }
 
@@ -244,6 +257,7 @@ module.exports = {
 	getPlayerSeat,
 	getCurrentSeat,
 	getPlayerCards,
+	getSeatCards,
 	playerHasCard,
 	deleteCard,
 	cleanupGame,
