@@ -3,12 +3,14 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const sessionInstance = require('./app-config/session');
 const protect = require('./app-config/protect');
 
 if (process.env.NODE_ENV === 'development') {
 	require('dotenv').config();
 }
+
+const sessionInstance = require('./app-config/session');
+
 
 const indexRouter = require('./routes/pages/index');
 const usersRouter = require('./routes/pages/users');
