@@ -64,12 +64,6 @@ router.post('/:gameId', async (request, response) => {
     const newCard = await Games.getCard({ cardId: card })
     const currentCard = await Games.getGameCurrentCard({ gameId });
 
-    console.log({
-      newCard,
-      currentCard,
-      color: game.last_color_picked,
-    })
-
     if (newCard.type !== currentCard.type
       && newCard.color !== currentCard.color
       && newCard.color !== 'none'
