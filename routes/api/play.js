@@ -56,7 +56,13 @@ router.post('/:gameId', async (request, response) => {
       return;
     }
 
-    // verify that card can be placed
+    const newCard = await Games.getCard({ cardId: card })
+    const currentCard = await Games.getGameCurrentCard({ gameId });
+
+    if (newCard.type !== currentCard.type && newCard.color !== currentCard.color) {
+      response.sendStatus(400);
+      return;
+    }
 
     await Games.deleteCard({
       gameId,
@@ -74,6 +80,12 @@ router.post('/:gameId', async (request, response) => {
       await Games.cleanupGame({ gameId });
       return;
     } else {
+      await Games.updateCurrentCard({gameId, currentCard: card });
+      const currentCard = await Games.getGameCurrentCard({ gameId })
+      request.app.io.emit(`setCurrentCard:${gameId}`, {
+        card: currentCard,
+      });
+
       request.app.io.emit(`setPlayerCards:${gameId}`, {
         gameId,
         seat,

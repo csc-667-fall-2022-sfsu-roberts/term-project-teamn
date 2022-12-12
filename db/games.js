@@ -76,6 +76,15 @@ const CLEANUP_GAME_CARDS =
 const CLEANUP_GAME_USERS =
 	'DELETE FROM game_users WHERE game_id=${gameId}';
 
+const UPDATE_GAME_CURRENT_CARD =
+	'update games set current_card=${currentCard} where id=${gameId}';
+
+const GET_GAME_CURRENT_CARD =
+	'select c.id, c.type, c.color from games  JOIN cards c on c.id = games.current_card where games.id=${gameId}';
+
+const GET_CARD =
+	'SELECT * FROM cards WHERE id = ${cardId}';
+
 const createPublicGame = ({ userId, maxPlayers }) => {
 	return db
 		.one(CREATE_PUBLIC, { userId: userId, maxPlayers })
@@ -240,6 +249,18 @@ const cleanupGame = ({gameId}) => {
 		.then(() => db.any(CLEANUP_GAME, { gameId }))
 }
 
+const updateCurrentCard = ({gameId, currentCard}) => {
+	return db.any(UPDATE_GAME_CURRENT_CARD, { gameId, currentCard });
+}
+
+const getGameCurrentCard = ({gameId}) => {
+	return db.one(GET_GAME_CURRENT_CARD, { gameId });
+}
+
+const getCard = ({ cardId }) => {
+	return db.one(GET_CARD, { cardId })
+}
+
 module.exports = {
 	countPlayers,
 	getMyGames,
@@ -261,4 +282,7 @@ module.exports = {
 	playerHasCard,
 	deleteCard,
 	cleanupGame,
+	updateCurrentCard,
+	getGameCurrentCard,
+	getCard,
 };

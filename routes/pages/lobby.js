@@ -171,6 +171,13 @@ router.get('/game/:id', async (request, response) => {
 				});
 			}
 
+			const unusedCards = await Games.getUnusedCards({gameId})
+			const card = unusedCards[Math.floor(Math.random() * unusedCards.length)];
+			await Games.updateCurrentCard({gameId, currentCard: card.id});
+			request.app.io.emit(`setCurrentCard:${gameId}`, {
+				card,
+			});
+
 			request.app.io.emit(`setTurnPlayer:${gameId}`, {
 				seat: 1
 			});
@@ -190,6 +197,11 @@ router.get('/game/:id', async (request, response) => {
 			const seat = await Games.getCurrentSeat({ gameId })
 			request.app.io.emit(`setTurnPlayer:${gameId}`, {
 				seat: seat.seat,
+			});
+
+			const currentCard = await Games.getGameCurrentCard({ gameId });
+			request.app.io.emit(`setCurrentCard:${gameId}`, {
+				card: currentCard,
 			});
 		}
 	}

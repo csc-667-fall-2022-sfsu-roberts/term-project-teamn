@@ -66,3 +66,8 @@ document.querySelector('#takeCard')
 gameSocket.on(`endGame:${gameId}`, () => {
 	window.location.href = '/lobby'
 });
+
+gameSocket.on(`setCurrentCard:${gameId}`, ({ card }) => {
+	const el = document.querySelector('#currentCard');
+	el.innerText = `Current card is: ${card.color} ${card.type}`
+});
