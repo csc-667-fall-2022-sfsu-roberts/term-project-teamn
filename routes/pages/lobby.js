@@ -172,7 +172,10 @@ router.get('/game/:id', async (request, response) => {
 			}
 
 			const unusedCards = await Games.getUnusedCards({gameId})
-			const card = unusedCards[Math.floor(Math.random() * unusedCards.length)];
+			let card = unusedCards[Math.floor(Math.random() * unusedCards.length)];
+			while (card.type > 9) {
+				card = unusedCards[Math.floor(Math.random() * unusedCards.length)];
+			}
 			await Games.updateCurrentCard({gameId, currentCard: card.id});
 			request.app.io.emit(`setCurrentCard:${gameId}`, {
 				card,
