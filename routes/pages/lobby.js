@@ -6,13 +6,13 @@ const Games = require('../../db/games');
 const router = express.Router();
 
 function sleep(ms) {
-	return new Promise(resolve => setTimeout(resolve, ms));
+	return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 router.get('/', (request, response) => {
 	const { username, userId } = request.session;
 
-	Games.getAllGames()
+	Games.getAllJoinableGames({ userId })
 		.then((games) => {
 			games.forEach((game) => {
 				game.createdAt = moment(game.createdAt).fromNow();
@@ -123,28 +123,29 @@ router.get('/game/:id', async (request, response) => {
 
 	const gameId = request.params.id;
 	const game = await Games.getGame({
-		game_id: gameId
-	})
-	let gameStarted = (await Games.gameStarted({gameId})).length > 0;
+		game_id: gameId,
+	});
+	let gameStarted = (await Games.gameStarted({ gameId })).length > 0;
 
 	if (game.number === game.max_players && !gameStarted) {
 		await Games.updateSeatState({
 			gameId,
 			seat: 1,
 			current: true,
-		})
+		});
 	}
 
 	const userSeat = await Games.getPlayerSeat({
-		gameId, userId
-	})
+		gameId,
+		userId,
+	});
 
 	response.render('protected/playTable', {
 		username: username,
 		title: 'Lobby',
 		userId: userId,
 		gameId: gameId,
-		seat: userSeat.seat
+		seat: userSeat.seat,
 	});
 
 	await sleep(3000);
@@ -154,50 +155,55 @@ router.get('/game/:id', async (request, response) => {
 			for (let seat = 1; seat <= game.max_players; seat++) {
 				const cardsForSeat = [];
 				for (let card = 0; card < 7; card++) {
-					const unusedCards = await Games.getUnusedCards({gameId})
-					const card = unusedCards[Math.floor(Math.random() * unusedCards.length)];
+					const unusedCards = await Games.getUnusedCards({ gameId });
+					const card =
+						unusedCards[
+							Math.floor(Math.random() * unusedCards.length)
+						];
 					await Games.giveCardToPlayer({
 						gameId,
 						cardId: card.id,
-						seat
-					})
+						seat,
+					});
 					cardsForSeat.push(card);
 				}
 
 				request.app.io.emit(`setPlayerCards:${gameId}`, {
 					gameId,
 					seat,
-					cards: cardsForSeat
+					cards: cardsForSeat,
 				});
 			}
 
-			const unusedCards = await Games.getUnusedCards({gameId})
-			let card = unusedCards[Math.floor(Math.random() * unusedCards.length)];
+			const unusedCards = await Games.getUnusedCards({ gameId });
+			let card =
+				unusedCards[Math.floor(Math.random() * unusedCards.length)];
 			while (card.type > 9) {
-				card = unusedCards[Math.floor(Math.random() * unusedCards.length)];
+				card =
+					unusedCards[Math.floor(Math.random() * unusedCards.length)];
 			}
-			await Games.updateCurrentCard({gameId, currentCard: card.id});
+			await Games.updateCurrentCard({ gameId, currentCard: card.id });
 			request.app.io.emit(`setCurrentCard:${gameId}`, {
 				card,
 			});
 
 			request.app.io.emit(`setTurnPlayer:${gameId}`, {
-				seat: 1
+				seat: 1,
 			});
 		} else {
 			for (let seat = 1; seat <= game.max_players; seat++) {
 				const cards = await Games.getSeatCards({
 					gameId,
 					seat,
-				})
+				});
 				request.app.io.emit(`setPlayerCards:${gameId}`, {
 					gameId,
 					seat,
-					cards: cards
+					cards: cards,
 				});
 			}
 
-			const seat = await Games.getCurrentSeat({ gameId })
+			const seat = await Games.getCurrentSeat({ gameId });
 			request.app.io.emit(`setTurnPlayer:${gameId}`, {
 				seat: seat.seat,
 			});
