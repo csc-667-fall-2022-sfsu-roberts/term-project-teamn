@@ -30,6 +30,7 @@ button,
 
 .main {
 	height: 85vh;
+	/* position: relative; */
 }
 
 footer {
@@ -308,4 +309,193 @@ a {
 	width: 100%;
 	border: 5px solid blue;
 	margin: 0 1px;
+}
+
+.tableMes {
+	text-align: center;
+	color: blue;
+	border-bottom: blue 5px solid;
+}
+
+#turnRed {
+	color: red;
+	font-size: xx-large;
+	text-align: center;
+	font-weight: bold;
+}
+#turnGreen {
+	color: green;
+	font-size: xx-large;
+	text-align: center;
+	font-weight: bold;
+}
+
+#currentCard {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	height: 5rem;
+}
+
+div[class^='color-'] {
+	display: flex;
+	align-content: center;
+	justify-content: center;
+	align-items: center;
+
+	width: 10rem;
+	border: 1px grey solid;
+	height: 100%;
+	margin-left: 5rem;
+
+	color: white;
+	font-weight: 900;
+	font-size: x-large;
+	padding: 3px;
+
+	text-align: center;
+}
+
+div[class^='type-'] {
+	margin: 0;
+	text-align: center;
+}
+
+.type-1::before {
+	content: '1';
+}
+.type-2::before {
+	content: '2';
+}
+.type-3::before {
+	content: '3';
+}
+.type-4::before {
+	content: '4';
+}
+.type-5::before {
+	content: '5';
+}
+.type-6::before {
+	content: '6';
+}
+.type-7::before {
+	content: '7';
+}
+.type-8::before {
+	content: '8';
+}
+.type-9::before {
+	content: '9';
+}
+.type-10::before {
+	content: 'Draw Two';
+}
+
+.type-11::before {
+	content: 'Draw Four';
+}
+
+.type-12::before {
+	content: 'Wild';
+}
+
+.type-13::before {
+	content: 'Reverse';
+}
+
+.type-14::before {
+	content: 'Skip';
+}
+
+.color-yellow {
+	background-color: rgb(255, 190, 0);
+}
+
+.color-blue {
+	background-color: blue;
+}
+.color-red {
+	background-color: red;
+}
+.color-green {
+	background-color: green;
+}
+
+.color-none {
+	background-color: grey;
+}
+
+.wildCard {
+	display: flex;
+	margin: 1rem 3rem;
+}
+
+.wildCard > div {
+	margin: 0;
+	padding: 0;
+	margin-right: 15px;
+}
+.wildCard > div > p {
+	margin: 5px;
+	padding: 5px;
+}
+
+.takeBtn {
+	width: 100%;
+	text-align: center;
+}
+
+.seatInfo {
+	width: 100%;
+	text-align: right;
+	margin: 0;
+	padding: 0;
+}
+
+.seatInfo > p {
+	margin: 0;
+	margin-right: 1rem;
+}
+
+button[class^='btn-color'] {
+	margin: 1px;
+	height: 5rem;
+	width: 5rem;
+}
+
+#selfCards {
+	max-height: 30rem;
+	overflow: scroll;
+}
+
+[class^='btn-color-'] {
+	margin: 1px;
+	text-align: center;
+}
+
+.btn-color-yellow {
+	background-color: rgb(255, 190, 0);
+}
+
+.btn-color-blue {
+	background-color: blue;
+}
+.btn-color-red {
+	background-color: red;
+}
+.btn-color-green {
+	background-color: green;
+}
+
+.btn-color-none {
+	background-color: grey;
+}
+
+.gameTable {
+	overflow: scroll;
+}
+
+button > p {
+	margin: 0;
 }

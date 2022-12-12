@@ -1,27 +1,36 @@
 <div class="gameTable">
-  <h1>welcome to the game #<%- gameId -%></h1>
+  <div class="tableMes">
+    <h1>Table #<%- gameId -%></h1>
+  </div>
   <div id="board">
     <p id="actions">
-      <p id="turnText">Not your turn</p>
+    <p id="turnText">Loading...</p>
+    <div class="currentC">
       <p id="currentCard"></p>
-      <div id="selfCards">
+    </div>
+    <h2>
+      Play card:
+    </h2>
+    <div id="selfCards">
 
+    </div>
+    <div class="wildCard">
+      <div class="alert alert-secondary">
+        <p>
+          <i>For cards with color none, you can pick which color will be next using the following select:</i>
+        </p>
       </div>
-      <p>
-        10: Draw Two<br />
-        11: Draw Four<br />
-        12: Wild<br />
-        13: Reverse<br />
-        14: Skip<br />
-        For cards with color none, you can pick which color will be next using the following select:
-      </p>
       <select name="color" id="color">
         <option value="red" selected="selected">Red</option>
         <option value="blue">Blue</option>
         <option value="green">Green</option>
         <option value="yellow">Yellow</option>
       </select>
-      <button type="button" id="takeCard" disabled>Take card</button>
+    </div>
+
+    <div class="takeBtn">
+      <button type="button" class="btn btn-primary btn-lg" id="takeCard" disabled>Take card</button>
+    </div>
     </p>
   </div>
 </div>

@@ -12,65 +12,74 @@ const playCard = async (id, color) => {
 		body: JSON.stringify({
 			action: 'playCard',
 			card: id,
-			color: colorElem.value
+			color: colorElem.value,
 		}),
-	})
-}
+	});
+};
 
-gameSocket.on(`setPlayerCards:${gameId}`, ({seat, cards}) => {
+gameSocket.on(`setPlayerCards:${gameId}`, ({ seat, cards }) => {
 	if (seat !== ownSeat) {
 		const board = document.querySelector('#board');
 		const oldSeat = document.querySelector(`#seat-${seat}`);
 
 		const seatEl = oldSeat || document.createElement('p');
 		seatEl.id = `seat-${seat}`;
-		seatEl.innerText = `Seat ${seat} has ${cards.length} cards`
+		seatEl.innerHTML = `Seat ${seat} has ${cards.length} cards`;
+		seatEl.innerHTML = `	<div class="seatInfo alert alert-warning"><p>Seat <b>${seat}</b>  has <b>${cards.length}</b> cards</p></div>`;
 
 		board.appendChild(seatEl);
 	} else {
 		const selfCards = document.querySelector('#selfCards');
-		selfCards.innerHTML = "";
+		selfCards.innerHTML = '';
 
 		cards.forEach((card) => {
 			const cardEl = document.createElement('button');
-			cardEl.textContent = `Play ${card.color} ${card.type}`;
+			cardEl.classList.add(`btn-color-${card.color}`);
+			cardEl.classList.add('btn');
+			cardEl.classList.add('btn-secondary');
+
+			const cardContent = document.createElement('p');
+			cardContent.classList.add(`type-${card.type}`);
+			cardContent.innerText = '';
+			cardEl.append(cardContent);
 			cardEl.addEventListener('click', async () => {
 				await playCard(card.id);
-			})
+			});
 			selfCards.appendChild(cardEl);
-		})
+		});
 	}
 });
 
-gameSocket.on(`setTurnPlayer:${gameId}`, ({seat}) => {
+gameSocket.on(`setTurnPlayer:${gameId}`, ({ seat }) => {
 	const selfTurn = seat === ownSeat;
 
-	document.querySelector('#turnText').innerText = selfTurn ? 'Your turn' : 'Not your turn';
+	document.querySelector('#turnText').innerHTML = selfTurn
+		? "<h1 id='turnGreen'>Your turn</h1>"
+		: "<h1 id='turnRed'>Not your turn</h1>";
 	const takeCardButton = document.querySelector('#takeCard');
 	takeCardButton.disabled = !selfTurn;
 
 	const selfCards = document.querySelector('#selfCards');
 	selfCards.childNodes.forEach((child) => {
 		child.disabled = !selfTurn;
-	})
+	});
 });
 
-document.querySelector('#takeCard')
-	.addEventListener('click', async () => {
-		await fetch(`/play/${gameId}`, {
-			method: 'post',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({
-				action: 'takeCard'
-			}),
-		})
+document.querySelector('#takeCard').addEventListener('click', async () => {
+	await fetch(`/play/${gameId}`, {
+		method: 'post',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({
+			action: 'takeCard',
+		}),
 	});
+});
 
 gameSocket.on(`endGame:${gameId}`, () => {
-	window.location.href = '/lobby'
+	window.location.href = '/lobby';
 });
 
 gameSocket.on(`setCurrentCard:${gameId}`, ({ card }) => {
 	const el = document.querySelector('#currentCard');
-	el.innerText = `Current card is: ${card.color} ${card.type}`
+	el.innerHTML = `<h2>Current card is:</h2>  <div class="color-${card.color} type-${card.type}"></p></div>`;
 });
