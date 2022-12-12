@@ -10,9 +10,15 @@ router.post('/:gameId', async (request, response) => {
 
   const gameId = parseInt(gameIdStr);
 
-  const currentPlayer = await Games.getCurrentSeat({
-    gameId,
-  });
+  let currentPlayer;
+  try {
+    currentPlayer = await Games.getCurrentSeat({
+      gameId,
+    });
+  } catch (e) {
+    response.sendStatus(400);
+    return;
+  }
 
   if (currentPlayer.user_id !== userId) {
     return response.sendStatus(400);
@@ -79,7 +85,11 @@ router.post('/:gameId', async (request, response) => {
     return;
   }
 
-  const nextSeat = (seat) % 2 + 1;
+  const game = await Games.getGame({
+    game_id: gameId,
+  })
+
+  const nextSeat = (seat) % game.max_players + 1;
   await Games.updateSeatState({
     gameId,
     seat: seat,

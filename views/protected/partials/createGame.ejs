@@ -2,9 +2,15 @@
   <h1>Create a game:</h1>
   <div class="d-flex">
     <form class="mx-1" action="/lobby/generatePublicGame" method="post">
+      <div class="form-group">
+        <input type="number" class="form-control" style="height: 32px" name="maxPlayers" placeholder="2" min="2" max="4">
+      </div>
       <input class="btn btn-secondary" type="submit" value="PUBLIC" />
     </form>
     <form class="mx-1" action="/lobby/generatePrivateGame" method="post">
+      <div class="form-group">
+        <input type="number" class="form-control" style="height: 32px" name="maxPlayers" placeholder="2" min="2" max="4">
+      </div>
       <input class="btn btn-secondary" type="submit" value="PRIVATE" />
     </form>
   </div>

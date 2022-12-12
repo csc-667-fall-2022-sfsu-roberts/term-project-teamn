@@ -75,8 +75,9 @@ const handleNewPublicGameError = (response, redirectUri) => (error) => {
 
 router.post('/generatePublicGame', (request, response) => {
 	const { userId } = request.session;
+	const { maxPlayers } = request.body;
 
-	Games.createPublicGame({ userId })
+	Games.createPublicGame({ userId, maxPlayers })
 		.then((res) => {
 			response.redirect(`/lobby/mygames`);
 		})
@@ -85,10 +86,10 @@ router.post('/generatePublicGame', (request, response) => {
 
 router.post('/generatePrivateGame', (request, response) => {
 	const { userId } = request.session;
-
+	const { maxPlayers } = request.body;
 	const code = Date.now();
 
-	Games.createPrivateGame({ userId, code })
+	Games.createPrivateGame({ userId, code, maxPlayers })
 		.then((res) => {
 			response.redirect(`/lobby/mygames`);
 		})
@@ -126,7 +127,7 @@ router.get('/game/:id', async (request, response) => {
 	})
 	const gameStarted = await Games.gameStarted(gameId);
 
-	if (game.number === 2 && !await Games.gameStarted(gameId)) {
+	if (game.number === game.max_players && !await Games.gameStarted(gameId)) {
 		await Games.updateSeatState({
 			gameId,
 			seat: 1,
@@ -148,9 +149,8 @@ router.get('/game/:id', async (request, response) => {
 
 	await sleep(3000);
 
-
-	if (game.number === 2 && !gameStarted) {
-		for (let seat = 1; seat <= 2; seat++) {
+	if (game.number === game.max_players && !gameStarted) {
+		for (let seat = 1; seat <= game.max_players; seat++) {
 			const cardsForSeat = [];
 			for (let card = 0; card < 7; card++) {
 				const unusedCards = await Games.getUnusedCards({ gameId })
