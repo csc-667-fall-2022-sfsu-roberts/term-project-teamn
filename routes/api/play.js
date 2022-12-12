@@ -183,7 +183,14 @@ router.post('/:gameId', async (request, response) => {
     return;
   }
 
-  const nextSeat = (seat) % game.max_players + game.game_direction * seatIncrement;
+  let nextSeat = seat + game.game_direction * seatIncrement;
+  while (nextSeat <= 0) {
+    nextSeat += game.max_players;
+  }
+  while (nextSeat > game.max_players) {
+    nextSeat -= game.max_players;
+  }
+
   await Games.updateSeatState({
     gameId,
     seat: seat,
