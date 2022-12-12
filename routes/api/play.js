@@ -5,7 +5,7 @@ const {getPlayerCards} = require("../../db/games");
 
 router.post('/:gameId', async (request, response) => {
   const { gameId: gameIdStr } = request.params;
-  const { action, card } = request.body;
+  const { action, card, color } = request.body;
   const { userId } = request.session;
 
   const gameId = parseInt(gameIdStr);
@@ -24,6 +24,11 @@ router.post('/:gameId', async (request, response) => {
     return response.sendStatus(400);
   }
   const { seat } = currentPlayer;
+
+  const game = await Games.getGame({
+    game_id: gameId,
+  })
+  let seatIncrement = 1;
 
   if (action === 'takeCard') {
     const cards = await getPlayerCards({
@@ -59,9 +64,96 @@ router.post('/:gameId', async (request, response) => {
     const newCard = await Games.getCard({ cardId: card })
     const currentCard = await Games.getGameCurrentCard({ gameId });
 
-    if (newCard.type !== currentCard.type && newCard.color !== currentCard.color && newCard.color !== 'none') {
+    console.log({
+      newCard,
+      currentCard,
+      color: game.last_color_picked,
+    })
+
+    if (newCard.type !== currentCard.type
+      && newCard.color !== currentCard.color
+      && newCard.color !== 'none'
+      && !(currentCard.color === 'none' && game.last_color_picked === newCard.color)) {
       response.sendStatus(400);
       return;
+    }
+
+    switch (newCard.type) {
+      case 10: // draw two
+        const seatWhoGetCards = (seat) % game.max_players + game.game_direction;
+        const cards = await Games.getSeatCards({
+          gameId,
+          seat: seatWhoGetCards,
+        });
+        for (let i = 0; i < 2; i++) {
+          const unusedCards = await Games.getUnusedCards({ gameId })
+          const newCard = unusedCards[Math.floor(Math.random() * unusedCards.length)];
+          await Games.giveCardToPlayer({
+            gameId,
+            cardId: newCard.id,
+            seat: seatWhoGetCards,
+          })
+          cards.push(newCard);
+        }
+
+        request.app.io.emit(`setPlayerCards:${gameId}`, {
+          gameId,
+          seat: seatWhoGetCards,
+          cards,
+        });
+        break;
+      case 11: // draw four
+        if (!(['red', 'blue', 'green', 'yellow'].includes(color))) {
+          response.sendStatus(400);
+          return;
+        }
+        await Games.updateGameLastColorPicked({
+          gameId,
+          lastColorPicked: color,
+        })
+
+        const seatWhoGetCardsFour = (seat) % game.max_players + game.game_direction;
+        const cardsFour = await Games.getSeatCards({
+          gameId,
+          seat: seatWhoGetCardsFour,
+        });
+        for (let i = 0; i < 4; i++) {
+          const unusedCards = await Games.getUnusedCards({ gameId })
+          const newCard = unusedCards[Math.floor(Math.random() * unusedCards.length)];
+          await Games.giveCardToPlayer({
+            gameId,
+            cardId: newCard.id,
+            seat: seatWhoGetCardsFour,
+          })
+        }
+        cardsFour.push(newCard);
+
+        request.app.io.emit(`setPlayerCards:${gameId}`, {
+          gameId,
+          seat: seatWhoGetCardsFour,
+          cards: cardsFour,
+        });
+        break;
+      case 12: // wild
+        if (!(['red', 'blue', 'green', 'yellow'].includes(color))) {
+          response.sendStatus(400);
+          return;
+        }
+        await Games.updateGameLastColorPicked({
+          gameId,
+          lastColorPicked: color,
+        })
+        break;
+      case 13: // reverse
+        await Games.updateGameDirection({
+          gameId,
+          gameDirection: game.game_direction * -1,
+        })
+        game.game_direction *= -1;
+        break;
+      case 14: // skip
+        seatIncrement = 2;
+        break;
     }
 
     await Games.deleteCard({
@@ -97,11 +189,7 @@ router.post('/:gameId', async (request, response) => {
     return;
   }
 
-  const game = await Games.getGame({
-    game_id: gameId,
-  })
-
-  const nextSeat = (seat) % game.max_players + 1;
+  const nextSeat = (seat) % game.max_players + game.game_direction * seatIncrement;
   await Games.updateSeatState({
     gameId,
     seat: seat,

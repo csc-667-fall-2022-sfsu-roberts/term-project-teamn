@@ -85,6 +85,12 @@ const GET_GAME_CURRENT_CARD =
 const GET_CARD =
 	'SELECT * FROM cards WHERE id = ${cardId}';
 
+const UPDATE_GAME_DIRECTION =
+	'update games set game_direction=${gameDirection} where id=${gameId}';
+
+const UPDATE_GAME_LAST_COLOR_PICKED =
+	'update games set last_color_picked=${lastColorPicked} where id=${gameId}';
+
 const createPublicGame = ({ userId, maxPlayers }) => {
 	return db
 		.one(CREATE_PUBLIC, { userId: userId, maxPlayers })
@@ -261,6 +267,14 @@ const getCard = ({ cardId }) => {
 	return db.one(GET_CARD, { cardId })
 }
 
+const updateGameDirection = ({gameId, gameDirection}) => {
+	return db.any(UPDATE_GAME_DIRECTION, { gameId, gameDirection });
+}
+
+const updateGameLastColorPicked = ({gameId, lastColorPicked}) => {
+	return db.any(UPDATE_GAME_LAST_COLOR_PICKED, { gameId, lastColorPicked });
+}
+
 module.exports = {
 	countPlayers,
 	getMyGames,
@@ -285,4 +299,6 @@ module.exports = {
 	updateCurrentCard,
 	getGameCurrentCard,
 	getCard,
+	updateGameDirection,
+	updateGameLastColorPicked,
 };

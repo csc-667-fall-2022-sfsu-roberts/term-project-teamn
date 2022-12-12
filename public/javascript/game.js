@@ -3,13 +3,16 @@ const gameSocket = io();
 const gameId = parseInt(document.querySelector('#gameIdSpan').innerText);
 const ownSeat = parseInt(document.querySelector('#seatSpan').innerText);
 
-const playCard = async (id) => {
+const playCard = async (id, color) => {
+	const colorElem = document.querySelector('#color');
+
 	await fetch(`/play/${gameId}`, {
 		method: 'post',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({
 			action: 'playCard',
 			card: id,
+			color: colorElem.value
 		}),
 	})
 }
